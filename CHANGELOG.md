@@ -1,6 +1,27 @@
 Project Changelog
 
 Numerical Differentiation Calculator
+[1.2.0] - Week 4
+
+Focus: Working Solver Output (Minimum Working Version)
+
+End-to-End Solver Verification: Successfully implemented and verified the central difference engine for polynomial, trigonometric, and exponential functions.
+
+Mathematical Accuracy Validation: Documented and validated expected analytical derivatives against actual numerical outputs (e.g., f'(x) of sin(x) at 0.785398).
+
+Computation Transparency: Verified the TrailLogger accurately displays real computation steps, including f(x+h) and f(x-h) evaluations, rather than just the final answer.
+
+Truncation Error Analysis: Identified and documented the inherent minor residuals (e.g., in exponential functions) that occur due to the nature of numerical approximations.
+
+[1.1.5] - Week 3
+
+Focus: UI/UX Enhancements & Advanced Trail Logging
+
+Dedicated TrailLogger Class: Refactored the internal step-tracking logic into a separate TrailLogger class to automatically handle step numbering, indentation, and clean formatting.
+
+Enlarge Log Feature: Added a "⛶ Enlarge Log" button to the UI that pops out the solution trail into a dedicated, resizable window for better readability of long computations.
+
+Auto-Scrolling: Implemented automatic scrolling (see(tk.END)) to ensure the latest computation steps and final answers are always instantly visible to the user.
 
 [1.1.0] - Week 2
 
