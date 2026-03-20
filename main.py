@@ -62,57 +62,69 @@ class NumericalDifferentiator:
                 raise NameError(f"Use of {name} not allowed")
         return eval(code, {"__builtins__": {}, "np": np}, allowed_names)
 
-    def central_difference(self, f, x, h):
-        """Compute derivative using central difference method"""
+    def central_difference(self, f, x, h, tol=1e-6, max_iter=20):
+        """Compute derivative iteratively using central difference method"""
         self.logger.clear()
         start_time = time.time()
 
         self.logger.add_heading("GIVEN")
         self.logger.add_info(f"Function f(x) = {f}")
         self.logger.add_info(f"Point x = {x}")
-        self.logger.add_info(f"Step size h = {h}")
+        self.logger.add_info(f"Initial Step size h = {h}")
+        self.logger.add_info(f"Target Tolerance = {tol}")
+        self.logger.add_info(f"Max Iterations = {max_iter}")
 
         self.logger.add_heading("METHOD")
-        self.logger.add_info("Central Difference Approximation")
-        self.logger.add_info("Formula: f'(x) ≈ [f(x + h) - f(x - h)] / (2h)")
+        self.logger.add_info("Iterative Central Difference Approximation")
+        self.logger.add_info("Halving step size until tolerance or max iterations reached.")
 
         self.logger.add_heading("STEPS")
         try:
-            f_plus = self.evaluate(x + h, f)
-            self.logger.add_step(f"Calculate f(x + h) = f({x + h})")
-            self.logger.add_step(f"f({x + h}) = {f_plus:.8f}", is_substep=True)
+            prev_deriv = None
+            stop_reason = ""
+            deriv = 0
 
-            f_minus = self.evaluate(x - h, f)
-            self.logger.add_step(f"Calculate f(x - h) = f({x - h})")
-            self.logger.add_step(f"f({x - h}) = {f_minus:.8f}", is_substep=True)
+            for i in range(1, int(max_iter) + 1):
+                f_plus = self.evaluate(x + h, f)
+                f_minus = self.evaluate(x - h, f)
+                deriv = (f_plus - f_minus) / (2 * h)
 
-            derivative = (f_plus - f_minus) / (2 * h)
-            self.logger.add_step("Apply central difference formula:")
-            self.logger.add_step(f"f'({x}) ≈ [{f_plus:.8f} - ({f_minus:.8f})] / (2 × {h})", is_substep=True)
-            self.logger.add_step(f"f'({x}) ≈ {derivative:.8f}", is_substep=True)
+                self.logger.add_step(f"Iteration {i} (h = {h}):")
+                self.logger.add_step(f"f'({x}) ≈ {deriv:.8f}", is_substep=True)
+
+                if prev_deriv is not None:
+                    error = abs(deriv - prev_deriv)
+                    self.logger.add_step(f"Error vs previous: {error:.2e}", is_substep=True)
+
+                    if error <= tol:
+                        self.logger.add_info(
+                            f"\n[STOPPING RULE MET] Target tolerance ({tol}) reached at Iteration {i}.")
+                        stop_reason = "Tolerance Met"
+                        break
+                    elif h < 1e-12:
+                        self.logger.add_info(f"\n[STOPPING RULE MET] Machine precision limit reached (h too small).")
+                        stop_reason = "Precision Limit"
+                        break
+
+                prev_deriv = deriv
+                h = h / 2.0
+            else:
+                self.logger.add_info(f"\n[STOPPING RULE MET] Maximum iterations ({max_iter}) reached.")
+                stop_reason = "Max Iterations"
 
             self.logger.add_heading("FINAL")
-            self.logger.add_info(f"f'({x}) ≈ {derivative:.8f}")
-
-            self.logger.add_heading("VERIFICATION")
-            h_small = h / 10
-            derivative_refined = (self.evaluate(x + h_small, f) -
-                                  self.evaluate(x - h_small, f)) / (2 * h_small)
-            error_estimate = abs(derivative - derivative_refined)
-            self.logger.add_info("Checking residual/error using a smaller step size (h/10)...")
-            self.logger.add_info(f"Refined derivative: {derivative_refined:.8f}")
-            self.logger.add_info(f"Estimated Error (Residual): {error_estimate:.10e}")
+            self.logger.add_info(f"f'({x}) ≈ {deriv:.8f}")
 
             end_time = time.time()
             runtime = end_time - start_time
             self.logger.add_heading("SUMMARY")
+            self.logger.add_info(f"Stop Reason: {stop_reason}")
             self.logger.add_info(f"Runtime: {runtime:.6f} seconds")
-            self.logger.add_info("Iterations: N/A (Direct Analytical Approximation)")
             self.logger.add_info(f"Python version: {sys.version.split()[0]}")
             self.logger.add_info(f"NumPy version: {np.__version__}")
             self.logger.add_info(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-            return derivative, self.logger.get_trail()
+            return deriv, self.logger.get_trail()
 
         except Exception as e:
             raise e  # Pass to UI for handling
@@ -196,16 +208,30 @@ class CalculatorApp:
         params_frame.pack(fill="x", pady=10)
 
         x_frame = ttk.Frame(params_frame)
-        x_frame.pack(side="left", fill="x", expand=True, padx=(0, 10))
+        x_frame.pack(side="left", fill="x", expand=True, padx=(0, 5))
         ttk.Label(x_frame, text="x value", style="Input.TLabel").pack(anchor="w")
-        self.x_entry = ttk.Entry(x_frame, width=20, font=("Helvetica", 11))
+        self.x_entry = ttk.Entry(x_frame, width=15, font=("Helvetica", 11))
         self.x_entry.pack(fill="x")
 
         h_frame = ttk.Frame(params_frame)
-        h_frame.pack(side="left", fill="x", expand=True)
-        ttk.Label(h_frame, text="Step size (h)", style="Input.TLabel").pack(anchor="w")
-        self.h_entry = ttk.Entry(h_frame, width=20, font=("Helvetica", 11))
+        h_frame.pack(side="left", fill="x", expand=True, padx=(0, 5))
+        ttk.Label(h_frame, text="Initial Step (h)", style="Input.TLabel").pack(anchor="w")
+        self.h_entry = ttk.Entry(h_frame, width=15, font=("Helvetica", 11))
         self.h_entry.pack(fill="x")
+
+        tol_frame = ttk.Frame(params_frame)
+        tol_frame.pack(side="left", fill="x", expand=True, padx=(0, 5))
+        ttk.Label(tol_frame, text="Tolerance", style="Input.TLabel").pack(anchor="w")
+        self.tol_entry = ttk.Entry(tol_frame, width=15, font=("Helvetica", 11))
+        self.tol_entry.insert(0, "1e-6")
+        self.tol_entry.pack(fill="x")
+
+        iter_frame = ttk.Frame(params_frame)
+        iter_frame.pack(side="left", fill="x", expand=True)
+        ttk.Label(iter_frame, text="Max Iters", style="Input.TLabel").pack(anchor="w")
+        self.iter_entry = ttk.Entry(iter_frame, width=15, font=("Helvetica", 11))
+        self.iter_entry.insert(0, "20")
+        self.iter_entry.pack(fill="x")
 
         button_frame = ttk.Frame(input_frame)
         button_frame.pack(pady=(15, 0))
@@ -232,15 +258,6 @@ class CalculatorApp:
                                       padding="15", style="Card.TLabelframe")
         result_frame.pack(fill="both", expand=True, padx=10, pady=(0, 10))
 
-        # --- NEW: Frame to hold the Enlarge Button ---
-        trail_header = ttk.Frame(result_frame)
-        trail_header.pack(fill="x", pady=(0, 5))
-
-        enlarge_btn = ttk.Button(trail_header, text="⛶ Enlarge Log", command=self.open_full_log,
-                                 style="Secondary.TButton")
-        enlarge_btn.pack(side="right")
-        # ---------------------------------------------
-
         self.result_text = scrolledtext.ScrolledText(
             result_frame, wrap=tk.WORD, height=15,
             font=("Consolas", 11), bg="#ffffff", fg="#2c3e50"
@@ -258,18 +275,22 @@ class CalculatorApp:
         f_str = self.function_entry.get().strip()
         x_str = self.x_entry.get().strip()
         h_str = self.h_entry.get().strip()
+        tol_str = self.tol_entry.get().strip()
+        iter_str = self.iter_entry.get().strip()
 
         try:
             # Rule 1: Required Fields
-            if not f_str or not x_str or not h_str:
-                raise ValueError("All fields (Function, x value, Step size) must be filled.")
+            if not f_str or not x_str or not h_str or not tol_str or not iter_str:
+                raise ValueError("All fields (Function, x, h, Tolerance, Max Iters) must be filled.")
 
             # Rule 2: Type Checks
             try:
                 x = float(x_str)
                 h = float(h_str)
+                tol = float(tol_str)
+                max_iter = int(iter_str)
             except ValueError:
-                raise ValueError("x and h must be valid numbers (e.g., 2 or 0.01).")
+                raise ValueError("x, h, and Tolerance must be valid numbers. Max Iters must be a whole number.")
 
             # Rule 3: Range Check
             if h == 0:
@@ -279,7 +300,7 @@ class CalculatorApp:
             self.result_text.insert(tk.END, "PASS ✓\n----------------------------------------\n\n")
 
             # Run computation
-            derivative, steps = self.differentiator.central_difference(f_str, x, h)
+            derivative, steps = self.differentiator.central_difference(f_str, x, h, tol, max_iter)
             self.result_text.insert(tk.END, steps)
             self.final_answer_var.set(f"f'({x}) ≈ {derivative:.8f}")
 
@@ -290,39 +311,22 @@ class CalculatorApp:
             self.final_answer_var.set("Input Error")
 
         finally:
-            self.result_text.see(tk.END)  # Added auto-scroll to bottom just in case
             self.result_text.configure(state='disabled')
 
     def clear(self):
         self.function_entry.delete(0, tk.END)
         self.x_entry.delete(0, tk.END)
         self.h_entry.delete(0, tk.END)
+        self.tol_entry.delete(0, tk.END)
+        self.tol_entry.insert(0, "1e-6")
+        self.iter_entry.delete(0, tk.END)
+        self.iter_entry.insert(0, "20")
 
         self.result_text.configure(state='normal')
         self.result_text.delete(1.0, tk.END)
         self.result_text.configure(state='disabled')
 
         self.final_answer_var.set("Awaiting computation...")
-
-    # --- NEW: Method to pop out the log window ---
-    def open_full_log(self):
-        log_window = tk.Toplevel(self.root)
-        log_window.title("Full Solution Trail")
-        log_window.geometry("800x600")
-        log_window.configure(bg="#f0f0f0")
-
-        full_text = scrolledtext.ScrolledText(
-            log_window, wrap=tk.WORD,
-            font=("Consolas", 12), bg="#ffffff", fg="#2c3e50"
-        )
-        full_text.pack(fill="both", expand=True, padx=20, pady=20)
-
-        # Grab the text from the main window and put it in the new window
-        current_log = self.result_text.get(1.0, tk.END)
-        full_text.insert(tk.END, current_log)
-        full_text.configure(state='disabled')
-
-    # ---------------------------------------------
 
     def run(self):
         self.root.mainloop()
