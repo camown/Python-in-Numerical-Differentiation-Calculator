@@ -1,7 +1,24 @@
 Project Changelog
 
 Numerical Differentiation Calculator
-[1.2.0] - Week 4
+
+$$1.3.0$$
+
+ - Week 5
+
+Focus: Iterative Completion & Stopping Rules
+
+Iterative Step Halving: Replaced single-run differentiation with an iterative loop that halves the step size (h) each iteration to hone in on the exact derivative.
+
+Dynamic Stopping Rules: Implemented Target Tolerance (stops when error between iterations is small enough) and Max Iterations (stops to prevent infinite loops).
+
+Machine Precision Failsafe: Added a catch for when h becomes smaller than 1e-12 to stop computations before hitting Python floating-point precision loss limits.
+
+UI Additions: Integrated editable fields for Tolerance and Max Iterations directly into the Tkinter window for full user control.
+
+$$1.2.0$$
+
+ - Week 4
 
 Focus: Working Solver Output (Minimum Working Version)
 
@@ -13,7 +30,9 @@ Computation Transparency: Verified the TrailLogger accurately displays real comp
 
 Truncation Error Analysis: Identified and documented the inherent minor residuals (e.g., in exponential functions) that occur due to the nature of numerical approximations.
 
-[1.1.5] - Week 3
+$$1.1.5$$
+
+ - Week 3
 
 Focus: UI/UX Enhancements & Advanced Trail Logging
 
@@ -23,7 +42,9 @@ Enlarge Log Feature: Added a "⛶ Enlarge Log" button to the UI that pops out th
 
 Auto-Scrolling: Implemented automatic scrolling (see(tk.END)) to ensure the latest computation steps and final answers are always instantly visible to the user.
 
-[1.1.0] - Week 2
+$$1.1.0$$
+
+ - Week 2
 
 Focus: Input Validation & Error Handling
 
@@ -37,7 +58,9 @@ Division-by-Zero Protection: Added a specific check to prevent a crash if the st
 
 Empty Field Detection: The app now detects if the user attempts to compute without filling in the function, x value, or step size.
 
-[1.0.0] - Week 1
+$$1.0.0$$
+
+ - Week 1
 
 Focus: UI Skeleton & Core Engine
 
