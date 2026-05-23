@@ -30,3 +30,24 @@ A modern, comprehensive desktop application for calculating numerical derivative
 3. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
+4. Run the application:
+   ```bash
+   python main.py
+
+## Usage 
+
+Load a Preset (Optional): Use the "Load Test Case" dropdown to populate known values for quick testing.
+
+Enter Parameters: - Function f(x): Enter a valid mathematical expression (e.g., sin(x), x2, exp(x)). Use the Quick Functions pad to easily build the formula.
+
+Method: Choose between Central, Forward, or Backward difference.
+
+x value: The mathematical point at which to evaluate the derivative.
+
+Initial Step (h): The starting step size (e.g., 0.1).
+
+Tolerance & Max Iters: Set stopping conditions for the iterative loop.
+
+Compute: Click Compute Result. The final numerical answer will display in the bottom left, and the step-by-step auditing trail will generate in the text box.
+
+Review & Export: Click Expand Log for an enlarged view, or click Export Report to save the entire computation trail to a local .txt file for documentation.
