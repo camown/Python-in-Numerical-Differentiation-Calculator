@@ -42,7 +42,5 @@ A modern, comprehensive desktop application for calculating numerical derivative
 - x value: The mathematical point at which to evaluate the derivative.
 - Initial Step (h): The starting step size (e.g., 0.1).
 - Tolerance & Max Iters: Set stopping conditions for the iterative loop.
-
-Compute: Click Compute Result. The final numerical answer will display in the bottom left, and the step-by-step auditing trail will generate in the text box.
-
-Review & Export: Click Expand Log for an enlarged view, or click Export Report to save the entire computation trail to a local .txt file for documentation.
+- Compute: Click Compute Result. The final numerical answer will display in the bottom left, and the step-by-step auditing trail will generate in the text box.
+- Review & Export: Click Expand Log for an enlarged view, or click Export Report to save the entire computation trail to a local .txt file for documentation.
