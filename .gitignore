@@ -1,3 +1,3 @@
 .idea/
 __pycache__/
-*.txt  # Optional: include this if you don't want those export files tracked
+.txt  # Optional: include this if you don't want those export files tracked
