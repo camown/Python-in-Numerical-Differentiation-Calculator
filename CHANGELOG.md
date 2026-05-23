@@ -2,7 +2,7 @@ Project Changelog
 
 Numerical Differentiation Calculator
 
-$$1.7.0$$
+$$0.9.0$$
 
   - Week 9
     
@@ -16,7 +16,7 @@ Taylor Expansion Back-check: Verifies the derivative by substituting it back int
 
 Summary Data: Enhanced the summary output to include total iteration counts for better auditing transparency.
 
-$$1.6.0$$
+$$0.8.0$$
 
   - Week 8
     
@@ -28,7 +28,7 @@ Input Validation: Added range checks for solver configurations to prevent nonsen
 
 NumPy Failsafe: Implemented np.seterr(all='raise') to ensure mathematical impossibilities trigger clean UI warnings instead of silent NaNs.
 
-$$1.5.0$$
+$$0.7.0$$
 
   - Week 7
     
@@ -39,7 +39,7 @@ About and Help Section: Added the About and Help Section to the System
 Documentation: Added Github Documentation 
 
 
-$$1.4.0$$
+$$0.6.0$$
 
   - Week 6
     
@@ -54,7 +54,7 @@ UI Additions: Integrated new dropdown menus directly into the Tkinter window, al
 Test Case Integration: Built an automated test loader containing 5 distinct test cases that instantly populates the inputs to streamline verification.
 
 
-$$1.3.0$$
+$$0.5.0$$
 
  - Week 5
 
@@ -68,7 +68,7 @@ Machine Precision Failsafe: Added a catch for when h becomes smaller than 1e-12 
 
 UI Additions: Integrated editable fields for Tolerance and Max Iterations directly into the Tkinter window for full user control.
 
-$$1.2.0$$
+$$0.4.0$$
 
  - Week 4
 
@@ -82,7 +82,7 @@ Computation Transparency: Verified the TrailLogger accurately displays real comp
 
 Truncation Error Analysis: Identified and documented the inherent minor residuals (e.g., in exponential functions) that occur due to the nature of numerical approximations.
 
-$$1.1.5$$
+$$0.3.0$$
 
  - Week 3
 
@@ -94,7 +94,7 @@ Enlarge Log Feature: Added a "⛶ Enlarge Log" button to the UI that pops out th
 
 Auto-Scrolling: Implemented automatic scrolling (see(tk.END)) to ensure the latest computation steps and final answers are always instantly visible to the user.
 
-$$1.1.0$$
+$$0.2.0$$
 
  - Week 2
 
@@ -110,7 +110,7 @@ Division-by-Zero Protection: Added a specific check to prevent a crash if the st
 
 Empty Field Detection: The app now detects if the user attempts to compute without filling in the function, x value, or step size.
 
-$$1.0.0$$
+$$0.1.0$$
 
  - Week 1
 
