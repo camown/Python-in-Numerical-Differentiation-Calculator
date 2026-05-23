@@ -173,7 +173,7 @@ class NumericalDifferentiator:
 class CalculatorApp:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Numerical Differentiation Calculator v1.7.0")
+        self.root.title("Numerical Differentiation Calculator v1.0")
         self.root.geometry("900x850")
 
         # --- SCIENTIFIC CALCULATOR COLOR PALETTE ---
@@ -213,7 +213,7 @@ class CalculatorApp:
             "Project Members: \nJohn Paul Fidelson\n"
             "Emanuel Lloyd Dagdag \n"
             "Kyle Andrei Escauriaga \n\n"
-            "Project Version: \n1.5.0"
+            "Project Version: \n1.0"
         )
         messagebox.showinfo("About", about_text)
 
