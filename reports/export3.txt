@@ -1,0 +1,75 @@
+SYS_CHECK  : OK
+----------------------------------------
+=== GIVEN ===
+  Function f(x)    = sqrt(x)
+  Point x          = 4.0
+  Initial Step (h) = 0.1
+  Method           = Forward Difference
+  Target Tolerance = 1e-06
+  Max Iterations   = 20
+
+
+=== METHOD ===
+  Iterative Forward Difference Approximation.
+  Halving step size (h/2) until tolerance or max iterations reached.
+
+
+=== STEPS ===
+ 1. Iteration 1 (h = 0.1):
+    ↳ f'(4.0) ≈ 0.24845673
+ 2. Iteration 2 (h = 0.05):
+    ↳ f'(4.0) ≈ 0.24922359
+    ↳ Error vs previous: 7.67e-04
+ 3. Iteration 3 (h = 0.025):
+    ↳ f'(4.0) ≈ 0.24961059
+    ↳ Error vs previous: 3.87e-04
+ 4. Iteration 4 (h = 0.0125):
+    ↳ f'(4.0) ≈ 0.24980499
+    ↳ Error vs previous: 1.94e-04
+ 5. Iteration 5 (h = 0.00625):
+    ↳ f'(4.0) ≈ 0.24990242
+    ↳ Error vs previous: 9.74e-05
+ 6. Iteration 6 (h = 0.003125):
+    ↳ f'(4.0) ≈ 0.24995119
+    ↳ Error vs previous: 4.88e-05
+ 7. Iteration 7 (h = 0.0015625):
+    ↳ f'(4.0) ≈ 0.24997559
+    ↳ Error vs previous: 2.44e-05
+ 8. Iteration 8 (h = 0.00078125):
+    ↳ f'(4.0) ≈ 0.24998779
+    ↳ Error vs previous: 1.22e-05
+ 9. Iteration 9 (h = 0.000390625):
+    ↳ f'(4.0) ≈ 0.24999390
+    ↳ Error vs previous: 6.10e-06
+ 10. Iteration 10 (h = 0.0001953125):
+    ↳ f'(4.0) ≈ 0.24999695
+    ↳ Error vs previous: 3.05e-06
+ 11. Iteration 11 (h = 9.765625e-05):
+    ↳ f'(4.0) ≈ 0.24999847
+    ↳ Error vs previous: 1.53e-06
+ 12. Iteration 12 (h = 4.8828125e-05):
+    ↳ f'(4.0) ≈ 0.24999924
+    ↳ Error vs previous: 7.63e-07
+  
+  [STOPPING RULE MET] Target tolerance (1e-06) reached at Iteration 12.
+
+
+=== FINAL ===
+  f'(4.0) ≈ 0.24999924
+
+
+=== VERIFICATION ===
+  Method: Iterative Step-Halving Consistency
+  Calculated Residual: 7.63e-07
+  Taylor Expansion Check: f(x+h) ≈ f(x) + f'(x)h
+  Taylor Residual: 7.45e-11
+  Status: VERIFIED (Residual within Tolerance)
+
+
+=== SUMMARY ===
+  Stop Reason      : Tolerance Met
+  Total Iterations : 12
+  Runtime          : 0.000000 seconds
+  Python version   : 3.12.0
+  NumPy version    : 2.0.0
+  Timestamp        : 2026-05-15 22:34:34
